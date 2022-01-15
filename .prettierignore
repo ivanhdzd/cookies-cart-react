@@ -1,0 +1,16 @@
+# Add files here to ignore them from prettier formatting
+.env*
+.gitignore
+.huskyrc
+.lintstagedrc
+.prettierignore
+browserslist
+**/*.yml
+**/*.ico
+devcontainers/*
+Dockerfile
+Jenkinsfile
+**/*.sh
+**/*.png
+**/*.jpg
+**/*.svg
