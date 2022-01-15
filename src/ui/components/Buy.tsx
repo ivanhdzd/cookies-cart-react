@@ -9,6 +9,8 @@ export function Buy(): JSX.Element {
   const { user } = useUserStorage();
   const { cart } = useCartStorage();
 
+  if (!user || !cart.products.length) return <></>;
+
   const [name, setName] = useState<TUsername>(user?.name ?? '');
   const [email, setEmail] = useState<TEmail>(user?.email ?? '');
   const [address, setaAddress] = useState('');
