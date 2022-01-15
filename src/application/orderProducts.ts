@@ -13,23 +13,51 @@ import {
   IPaymentsService,
 } from './ports';
 
-export function useOrderProducts() {
+type TOrderProductsDeps = {
+  payment: IPaymentsService;
+  notifier: INotificationService;
+  cartStorage: ICartStorageService;
+  orderStorage: IOrdersStorageService;
+  dateTime: IDateTimeService;
+};
+
+export function useOrderProducts(): (
+  user: TUser,
+  cart: TCart,
+) => Promise<void> {
   const payment: IPaymentsService = usePayment();
   const notifier: INotificationService = useNotifier();
   const cartStorage: ICartStorageService = useCartStorage();
   const orderStorage: IOrdersStorageService = useOrdersStorage();
   const dateTime: IDateTimeService = useDateTime();
 
-  async function orderProducts(user: TUser, cart: TCart): Promise<void> {
-    const order: TOrder = createOrder(user, cart, dateTime.currentDateTime());
+  return (user: TUser, cart: TCart): Promise<void> =>
+    orderProducts(user, cart, {
+      payment,
+      notifier,
+      cartStorage,
+      orderStorage,
+      dateTime,
+    });
+}
 
-    const paid: boolean = await payment.tryPay(order.total);
-    if (!paid) return notifier.notify('OOPS! Payment fails!');
+export async function orderProducts(
+  user: TUser,
+  cart: TCart,
+  {
+    payment,
+    notifier,
+    cartStorage,
+    orderStorage,
+    dateTime,
+  }: TOrderProductsDeps,
+): Promise<void> {
+  const order: TOrder = createOrder(user, cart, dateTime.currentDateTime());
 
-    const { orders }: IOrdersStorageService = orderStorage;
-    orderStorage.updateOrders([...orders, order]);
-    cartStorage.emptyCart();
-  }
+  const paid: boolean = await payment.tryPay(order.total);
+  if (!paid) return notifier.notify('OOPS! Payment fails!');
 
-  return { orderProducts };
+  const { orders }: IOrdersStorageService = orderStorage;
+  orderStorage.updateOrders([...orders, order]);
+  cartStorage.emptyCart();
 }
