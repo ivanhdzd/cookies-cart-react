@@ -1,7 +1,7 @@
-import { TProduct } from './product';
+import { TProduct, TProductList } from './product';
 
 export type TCart = {
-  products: TProduct[];
+  products: TProductList;
 };
 
 export function addProduct(cart: TCart, product: TProduct): TCart {

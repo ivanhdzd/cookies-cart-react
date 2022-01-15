@@ -7,6 +7,8 @@ export type TProduct = {
   toppings: TIngredient[];
 };
 
+export type TProductList = TProduct[];
+
 export const ingredients: Record<TIngredient, string> = {
   chocolate: 'Chocolate',
   cocoa: 'Cocoa Powder',

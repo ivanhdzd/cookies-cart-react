@@ -29,3 +29,7 @@ export interface INotificationService {
 export interface IPaymentsService {
   tryPay(amount: TPriceCents): Promise<boolean>;
 }
+
+export interface IDateTimeService {
+  currentDateTime(): TDateTimeString;
+}

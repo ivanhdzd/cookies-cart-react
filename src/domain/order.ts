@@ -1,22 +1,26 @@
 import { TCart } from './cart';
-import { totalPrice } from './product';
+import { totalPrice, TProductList } from './product';
 import { TUser } from './user';
 
 export type TOrderStatus = 'new' | 'delivery' | 'completed';
 
 export type TOrder = {
   user: TUniqueId;
-  cart: TCart;
+  products: TProductList;
   created: TDateTimeString;
   status: TOrderStatus;
   total: TPriceCents;
 };
 
-export function createOrder(user: TUser, cart: TCart): TOrder {
+export function createOrder(
+  user: TUser,
+  cart: TCart,
+  created: TDateTimeString,
+): TOrder {
   return {
     user: user.id,
-    cart,
-    created: new Date().toISOString(),
+    products: [...cart.products],
+    created,
     status: 'new',
     total: totalPrice(cart.products),
   };
