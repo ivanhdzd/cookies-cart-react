@@ -5,7 +5,7 @@ import { TUsername } from '../../domain/user';
 import { useUserStorage, useCartStorage } from '../../services/storageAdapter';
 
 export function Buy(): JSX.Element {
-  const { orderProducts } = useOrderProducts();
+  const orderProducts = useOrderProducts();
   const { user } = useUserStorage();
   const { cart } = useCartStorage();
 
